@@ -6,17 +6,26 @@
 	"scripts": {
 		"test": "jest",
 		"build": "tsc --project .",
+		"lint": "tslint --project . --config tslint.json",
 		"commit": "git-cz",
 		"semantic-release": "semantic-release"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint && npm run test",
+			"pre-push": "npm run lint && npm run test"
+		}
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.4",
 		"@babel/preset-env": "^7.8.4",
 		"@types/jest": "^25.1.2",
 		"babel-jest": "^25.1.0",
+		"husky": "^4.2.3",
 		"jest": "^25.1.0",
 		"semantic-release": "^17.0.2",
 		"ts-jest": "^25.2.0",
+		"tslint": "^6.0.0",
 		"typescript": "~3.6.5"
 	},
 	"config": {

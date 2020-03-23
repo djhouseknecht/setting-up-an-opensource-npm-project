@@ -19,6 +19,7 @@ I got most of my information and inspiration from [Patrick Lee Scott's article](
 * [Testing and Code Coverage]
 * [Linting and Editorconfig]
 * [Git Hooks]
+* [Documentation]
 * [Dependency Management]
 * [Badges]
 
@@ -41,7 +42,7 @@ npm init
 
 ![Travis Activate Repo][travis-activate-repo]
 
-# TODO: finish travis config (.yml)
+### TODO: finish travis config (.yml)
 
 ## Automating Releases
 [semantic-release] determines when and what to deploy. My favorite part is it keeps your npm and github release versions in line with each other. 
@@ -112,7 +113,7 @@ I also use typescript where possible. So, here is a good setup.
 > TypeScript v3.7.x is not backward compatible with v3.6.x and lower, so we want to install 3.6.x ([see here](https://github.com/microsoft/TypeScript/issues/33939)).
 
 ``` sh
-npm i -D typescript@~3.6.5
+npm i --save-dev typescript@~3.6.5
 ```
 **NOTE:**
 > A new stable version of Node was released last Wednesday, and with it came the newest version of npm. This update included a lot of big fixes, but the most visible change is that ‘install –save’ now prepends a caret (^) instead of a tilde (~).
@@ -182,7 +183,7 @@ We will test it out to make sure you get compiled js in the `./build` directory 
 I like [jest] for testing my JS/TS libraries. It has some convient [code coverage tools](https://jestjs.io/docs/en/cli#--coverageboolean). I'm not going to go into depth, but here is some basic jest setup. 
 
 ``` sh 
-npm i -D jest @types/jest ts-jest @babel/core @babel/preset-env babel-jest 
+npm i --save-dev jest @types/jest ts-jest @babel/core @babel/preset-env babel-jest 
 ```
 
 We need [babel] to transpile our ES6 JavaScript (if we have any) and [ts-jest] to compile out TypeScript files. 
@@ -297,12 +298,71 @@ npm run build
 Check to see if there is output in the `./build` directory. Should look like:
 ![Build Output][build-output]
 
+#### Codecov 
+Install `codecov`
+
+``` sh
+npm i --save-dev codecov
+```
+
+In **package.json** add this script:
+
+``` json 
+"scripts": {
+  "codecov": "codecov",
+	// other scripts
+}
+```
+
+
 ## Linting and Editorconfig
-# TODO: finish
+
+I like to use [tslint] for linting. Install needed devDependencies and create a `tslint.json` file
+
+``` sh
+npm i --save-dev tslint
+touch tslint.json
+```
+
+Checkout [tslint.json](/tslint.json) for some good rules. Copy and paste that into your `tslint.json` file. 
+
+In **package.json** add this script:
+
+``` json 
+"scripts": {
+	"lint": "tslint --project . --config tslint.json"
+	// other scripts
+}
+```
+
+Also, creating an **.editorconfig** helps standardize things. Checkout the [.editorconfig](/.editorconfig) for some basic config. 
 
 
 ## Git Hooks
-# TODO: finish
+I use [husky], but there is [pre-commit] which is pretty good too. This will ensure that your code passes tests and linting before you push and/or commit. Otherwise travis may be the one to find 
+
+Install the dependency: 
+
+``` sh
+npm i --save-dev husky
+```
+
+In **package.json** add this config: 
+
+``` json 
+"husky": {
+	"hooks": {
+		"pre-commit": "npm run lint && npm run test",
+		"pre-push": "npm run lint && npm run test"
+	}
+},
+```
+
+_You don't need both `pre-commit` and `pre-push`. Both can get annoying if you have a slow test process._
+
+## Documentation
+
+#### TODO: look into [typedoc]
 
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
@@ -392,6 +452,10 @@ My project [rxjs-util-classes] uses this setup. Go check out the repo and its tr
 [ts-jest]: https://kulshekhar.github.io/ts-jest/
 [From Fred K. Schott's Article]: http://fredkschott.com/post/2014/02/npm-no-longer-defaults-to-tildes/
 [rxjs-util-classes]: https://github.com/djhouseknecht/rxjs-util-classes
+[tslint]: https://palantir.github.io/tslint/
+[husky]: https://github.com/typicode/husky
+[pre-commit]: https://www.npmjs.com/package/pre-commit
+[typedoc]: https://typedoc.org/guides/options/#options
 
 
 [First Things First]: first-things-first
@@ -402,6 +466,7 @@ My project [rxjs-util-classes] uses this setup. Go check out the repo and its tr
 [Testing and Code Coverage]: testing-and-code-coverage
 [Linting and Editorconfig]: linting-and-editorconfig
 [Git Hooks]: git-hooks
+[Documentation]: documentation
 [Dependency Management]: dependency-management
 [Badges]: badges
 
