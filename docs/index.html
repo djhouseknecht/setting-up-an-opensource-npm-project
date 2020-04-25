@@ -432,6 +432,19 @@ touch tslint.json</code></pre>
 				<p><img src="assets/git-pages.png" alt="Git Pages" title="Git Pages"></p>
 				<p>Click on the <code>&quot;index&quot;</code> link:</p>
 				<p><img src="assets/git-pages-2.png" alt="Git Pages x2" title="Git Pages x2"></p>
+				<p>You could even update your <code>husky</code> hooks to build docs before every commit to ensure your docs stay up to date (another options is to use your travis build to push build docs and push to master. Maybe I will add that). In <code>package.json</code>: </p>
+				<pre><code class="language-json">{
+  <span class="hljs-attr">"husky"</span>: {
+    <span class="hljs-attr">"hooks"</span>: {
+      <span class="hljs-attr">"pre-commit"</span>: <span class="hljs-string">"npm run lint &amp;&amp; npm run test &amp;&amp; npm run doc &amp;&amp; git add ./docs"</span>, <span class="hljs-comment">// &lt;- update this</span>
+      <span class="hljs-attr">"pre-push"</span>: <span class="hljs-string">"npm run lint &amp;&amp; npm run test"</span>
+    }
+  },
+}</code></pre>
+				<a href="#todo" id="todo" style="color: inherit; text-decoration: none;">
+					<h5>TODO</h5>
+				</a>
+				<p>Add config to have travis build the docs and push to master</p>
 				<a href="#dependency-management" id="dependency-management" style="color: inherit; text-decoration: none;">
 					<h2>Dependency Management</h2>
 				</a>

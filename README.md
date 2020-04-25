@@ -474,6 +474,22 @@ Click on the `"index"` link:
 
 ![Git Pages x2][git-pages-2]
 
+You could even update your `husky` hooks to build docs before every commit to ensure your docs stay up to date (another options is to use your travis build to push build docs and push to master. Maybe I will add that). In `package.json`: 
+
+``` json
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test && npm run doc && git add ./docs", // <- update this
+      "pre-push": "npm run lint && npm run test"
+    }
+  },
+}
+```
+
+##### TODO
+Add config to have travis build the docs and push to master
+
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
 * signup
