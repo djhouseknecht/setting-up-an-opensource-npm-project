@@ -20,6 +20,7 @@ I got most of my information and inspiration from [Patrick Lee Scott's article](
 * [Linting and Editorconfig]
 * [Git Hooks]
 * [Documentation]
+* [Adding a CHANGELOG]
 * [Dependency Management]
 * [Badges]
 
@@ -487,8 +488,59 @@ You could even update your `husky` hooks to build docs before every commit to en
 }
 ```
 
-##### TODO
-Add config to have travis build the docs and push to master
+## Adding a CHANGELOG
+
+A changelog helps you and your users quickly see what changed between versions of your package. This is a little bit of a manual process (I haven' taken the time to write scripts to do this for me). `semantic-release` and `commitizen` document each version in github releases really well (based on commit message). 
+
+I like to use [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) formatting because it links to github version differences. This is great for comparing the difference in the code. There is a great example on that website so I won't re-write it all. 
+
+We will look at the example for my [rxjs-util-classes] repo. The main points are: 
+
+* having versions and the github links
+* listing all changes, especially breaking changes (which should always be major version bumps)
+  * Example headers: `Added, Changed, Deprecated, Removed, Fixed, Security, Breaking Changes` 
+* keeping it up to date
+
+Create a `CHANGELOG.md` file at the root, paste the following as a starting point, and adjust based on your repo: 
+
+``` markdown
+# Changelog
+_this is just an example changelog. make sure to change it based on your repo_
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+# [Unreleased]
+
+# [v1.1.1]
+
+### Added 
+* CHANGELOG
+
+### Changed
+* Documentation
+* Patch release on doc change ([from this comment](https://github.com/semantic-release/semantic-release/issues/192#issuecomment-333328071))
+
+# [v1.1.0]
+
+### Added
+* Observable, Behavior, and Subject maps
+* Documentation
+
+# [v1.0.0]
+
+### Added
+* Initial release 
+* README
+
+[Unreleased]: https://github.com/djhouseknecht/rxjs-util-classes/compare/v1.1.1...HEAD
+[v1.1.1]: https://github.com/djhouseknecht/rxjs-util-classes/compare/v1.1.0...v1.1.1
+[v1.1.0]: https://github.com/djhouseknecht/rxjs-util-classes/compare/v1.0.0...v1.1.0
+[v1.0.0]: https://github.com/djhouseknecht/rxjs-util-classes/releases/tag/v1.0.0
+```
 
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
@@ -568,6 +620,10 @@ Put this in your README
 ## Example Reposioty
 My project [rxjs-util-classes] uses this setup. Go check out the repo and its travis build to see some examples of this in action. 
 
+
+##### TODO (stuff I have to do add to this repo)
+* Add config to have travis build the docs and push to master
+
 [npmjs.org]: https://www.npmjs.com/
 [semantic-release]: https://www.npmjs.com/package/semantic-release
 [travis-ci.org]: https://travis-ci.org/
@@ -597,6 +653,7 @@ My project [rxjs-util-classes] uses this setup. Go check out the repo and its tr
 [Linting and Editorconfig]: #linting-and-editorconfig
 [Git Hooks]: #git-hooks
 [Documentation]: #documentation
+[Adding a CHANGELOG]: #adding-a-changelog
 [Dependency Management]: #dependency-management
 [Badges]: #badges
 
