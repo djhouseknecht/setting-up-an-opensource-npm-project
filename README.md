@@ -542,6 +542,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v1.0.0]: https://github.com/djhouseknecht/rxjs-util-classes/releases/tag/v1.0.0
 ```
 
+Check out my [rxjs-util-classes CHANGELOG](https://github.com/djhouseknecht/rxjs-util-classes/blob/master/CHANGELOG.md) for a full sample.
+
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
 * signup
