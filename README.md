@@ -445,7 +445,7 @@ Then we will add a `doc` script to our `package.json` to execute the generation 
 
 ``` json
 "scripts": {
-	"doc": "typedoc --options typedoc.config.js"
+  "doc": "typedoc --options typedoc.config.js && touch ./docs/.nojekyll"
 	// other scripts
 }
 ```
@@ -454,11 +454,12 @@ Now, run `npm run doc` and go check the `docs/` folder. There should be an outpu
 
 ![Typedoc Output][typedoc-output]
 
-We set the `mode: 'module` so there is not a `docs/modules` directory with all the modules. The `index.html` file has our `README.md` generated to html (and some other nice typedoc styling/navigation). 
+We set the `mode: 'module'` so there is not a `docs/modules` directory with all the modules. The `index.html` file has our `README.md` generated to html (and some other nice typedoc styling/navigation). 
 
-To deploy to Git Pages, we need to add more more file. Github using [Jekyll] to compile our site files, and it will not publish files that start with an underscore `_` ([see here](https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll)). 
+To deploy to Git Pages, we needed to add the `docs/.nojekyll` file. Github using [Jekyll] to compile our site files, and it will not publish files that start with an underscore `_` ([see here](https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll)). 
 
-We need to add a blank `.nojekyll`
+Once you have that pushed up to your repo, you can go to: **your github repo > Settings** (the tab to the far right): 
+
 
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
