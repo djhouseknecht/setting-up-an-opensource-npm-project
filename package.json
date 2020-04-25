@@ -1,50 +1,52 @@
 {
-	"name": "setting-up-an-opensource-npm-project",
-	"version": "0.0.0-development",
-	"description": "A quick reference guide to setting up a npm opensource package to easily manage with as little manual maintenance as possible.",
-	"main": "index.js",
-	"scripts": {
-		"test": "jest",
-		"build": "tsc --project .",
-		"lint": "tslint --project . --config tslint.json",
-		"commit": "git-cz",
-		"semantic-release": "semantic-release"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm run lint && npm run test",
-			"pre-push": "npm run lint && npm run test"
-		}
-	},
-	"devDependencies": {
-		"@babel/core": "^7.8.4",
-		"@babel/preset-env": "^7.8.4",
-		"@types/jest": "^25.1.2",
-		"babel-jest": "^25.1.0",
-		"husky": "^4.2.3",
-		"jest": "^25.1.0",
-		"semantic-release": "^17.0.2",
-		"ts-jest": "^25.2.0",
-		"tslint": "^6.0.0",
-		"typescript": "~3.6.5"
-	},
-	"config": {
-		"commitizen": {
-			"path": "./node_modules/cz-conventional-changelog"
-		}
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/djhouseknecht/setting-up-an-opensource-npm-project.git"
-	},
-	"keywords": [
-		"open-source",
-		"reference"
-	],
-	"author": "David Houseknecht <david.houseknecht.dev@gmail.com>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/djhouseknecht/setting-up-an-opensource-npm-project/issues"
-	},
-	"homepage": "https://github.com/djhouseknecht/setting-up-an-opensource-npm-project#readme"
+  "name": "setting-up-an-opensource-npm-project",
+  "version": "0.0.0-development",
+  "description": "A quick reference guide to setting up a npm opensource package to easily manage with as little manual maintenance as possible.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --project .",
+    "test": "jest",
+    "lint": "tslint --project . --config tslint.json",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "doc": "typedoc --options typedoc.config.js && touch ./docs/.nojekyll"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test",
+      "pre-push": "npm run lint && npm run test"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@types/jest": "^25.2.1",
+    "babel-jest": "^25.4.0",
+    "husky": "^4.2.5",
+    "jest": "^25.4.0",
+    "semantic-release": "^17.0.2",
+    "ts-jest": "^25.4.0",
+    "tslint": "^6.1.1",
+    "typedoc": "^0.17.4",
+    "typescript": "^3.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/djhouseknecht/setting-up-an-opensource-npm-project.git"
+  },
+  "keywords": [
+    "open-source",
+    "reference"
+  ],
+  "author": "David Houseknecht <david.houseknecht.dev@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/djhouseknecht/setting-up-an-opensource-npm-project/issues"
+  },
+  "homepage": "https://github.com/djhouseknecht/setting-up-an-opensource-npm-project#readme"
 }

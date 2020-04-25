@@ -1,0 +1,536 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>setting-up-an-opensource-npm-project</title>
+	<meta name="description" content="Documentation for setting-up-an-opensource-npm-project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">setting-up-an-opensource-npm-project</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>setting-up-an-opensource-npm-project</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#setting-up-an-opensource-npm-project" id="setting-up-an-opensource-npm-project" style="color: inherit; text-decoration: none;">
+					<h1>Setting Up An Opensource NPM Project</h1>
+				</a>
+				<p>A quick reference guide to setting up a npm opensource package to easily manage with as little manual maintenance as possible. </p>
+				<a href="#purpose" id="purpose" style="color: inherit; text-decoration: none;">
+					<h2>Purpose</h2>
+				</a>
+				<p>I like opensource alot and I constantly have new ideas.
+					BUT... sometimes those ideas are stifled just thinking about the time it takes to
+					set one up and then maintain it.
+				This document is hoping to make that process easy and efficient. </p>
+				<a href="#credits-and-references" id="credits-and-references" style="color: inherit; text-decoration: none;">
+					<h2>Credits and References</h2>
+				</a>
+				<p>I got most of my information and inspiration from <a href="https://hackernoon.com/these-6-essential-tools-will-maintain-your-npm-modules-for-you-4cbbee88e0cb">Patrick Lee Scott&#39;s article</a> on hackernoon. The article is a little outdated so I wanted to write some more notes for my own sake. </p>
+				<a href="#glossary" id="glossary" style="color: inherit; text-decoration: none;">
+					<h2>Glossary</h2>
+				</a>
+				<ul>
+					<li><a href="#first-things-first">First Things First</a></li>
+					<li><a href="#travis-ci">Travis CI</a></li>
+					<li><a href="#automating-releases">Automating Releases</a></li>
+					<li><a href="#standardize-commit-messages">Standardize commit messages</a></li>
+					<li><a href="#setting-up-typescript">Setting up TypeScript</a></li>
+					<li><a href="#testing-and-code-coverage">Testing and Code Coverage</a></li>
+					<li><a href="#linting-and-editorconfig">Linting and Editorconfig</a></li>
+					<li><a href="#git-hooks">Git Hooks</a></li>
+					<li><a href="#documentation">Documentation</a></li>
+					<li><a href="#dependency-management">Dependency Management</a></li>
+					<li><a href="#badges">Badges</a></li>
+				</ul>
+				<a href="#first-things-first" id="first-things-first" style="color: inherit; text-decoration: none;">
+					<h2>First Things First</h2>
+				</a>
+				<p>Kind of obvious: </p>
+				<ul>
+					<li>pick a package name that isn&#39;t already taken on <a href="https://www.npmjs.com/">npmjs.org</a></li>
+					<li>create a github repo with the same name (preferably)</li>
+				</ul>
+				<p>Clone the new repo from github and make sure to initialize npm to generate the <code>package.json</code>.</p>
+				<pre><code class="language-sh">git <span class="hljs-built_in">clone</span> &lt;repo-name&gt;
+<span class="hljs-built_in">cd</span> ./&lt;repo-name&gt;
+npm init</code></pre>
+				<a href="#travis-ci" id="travis-ci" style="color: inherit; text-decoration: none;">
+					<h2>Travis CI</h2>
+				</a>
+				<ul>
+					<li>create an account at <a href="https://travis-ci.org/">travis-ci.org</a> (use &quot;Sign Up With Github Account&quot;)</li>
+					<li>click on user avatar (top right) and select &quot;Settings&quot;</li>
+					<li>Active travis for your repository</li>
+				</ul>
+				<p><img src="assets/travis-activate-repo.png" alt="Travis Activate Repo" title="Travis Active Repo"></p>
+				<p>Now, create a <strong><code>.travis.yml</code></strong> file in your root directory with the following contents: </p>
+				<pre><code class="language-yml"><span class="hljs-comment"># tell travis what language you want to use</span>
+<span class="hljs-attr">language:</span> <span class="hljs-string">node_js</span>
+
+<span class="hljs-comment"># these are the versions of node to run the tests on</span>
+<span class="hljs-attr">node_js:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">node</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-number">12</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-number">10</span>
+
+<span class="hljs-comment"># use `npm` cache to speed up the builds</span>
+<span class="hljs-attr">cache:</span> <span class="hljs-string">npm</span>
+
+<span class="hljs-comment"># skip version branches (ie. v1.1.1)</span>
+<span class="hljs-attr">branches:</span>
+  <span class="hljs-attr">except:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">'/^v\d+\.\d+\.\d+$/'</span>
+
+<span class="hljs-comment"># install deps</span>
+<span class="hljs-attr">install:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">npm</span> <span class="hljs-string">install</span>
+
+<span class="hljs-comment"># declare two jobs, "Test" &amp; "Release"</span>
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">include:</span>
+    <span class="hljs-comment"># Test, Lint, and Report Coverage</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">stage:</span> <span class="hljs-string">"Test"</span>
+      <span class="hljs-attr">script:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">test</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">lint</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">codecov</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">build</span>
+    <span class="hljs-comment"># build and release only on non-forked, master branch</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">stage:</span> <span class="hljs-string">"Release"</span>
+      <span class="hljs-attr">if:</span> <span class="hljs-string">branch</span> <span class="hljs-string">==</span> <span class="hljs-string">master</span> <span class="hljs-string">&amp;&amp;</span> <span class="hljs-type">!fork</span>
+      <span class="hljs-attr">node_js:</span> <span class="hljs-number">12</span>
+      <span class="hljs-attr">script:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">build</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">npx</span> <span class="hljs-string">semantic-release</span></code></pre>
+				<p>Most of that is explained by the comments. A couple things to note: </p>
+				<ul>
+					<li>All node jobs will run a <code>&quot;Test&quot;</code> job. We have to override it with ours</li>
+					<li>The scripts run in order, so we need to list them in the order we want to run them</li>
+					<li>The <code>&quot;Release&quot;</code> stage will build the app (this can be any type of build script), and then call <code>semantic-release</code> to potentially release a new version (or on that in the next section)</li>
+				</ul>
+				<p>Example output for those jobs would look like this: </p>
+				<p><img src="assets/travis-build-results.png" alt="Travis Build Results" title="Travis Build Results"></p>
+				<p>You will notice that there are three <code>&quot;Test&quot;</code> jobs because we told travis to test using node versions <code>node</code> (which equals the default), <code>12</code>, &amp; <code>8</code>. There is only one <code>&quot;Release&quot;</code> job which ran because this was on the <code>master</code> branch. </p>
+				<a href="#automating-releases" id="automating-releases" style="color: inherit; text-decoration: none;">
+					<h2>Automating Releases</h2>
+				</a>
+				<p><a href="https://www.npmjs.com/package/semantic-release">semantic-release</a> determines when and what to deploy. My favorite part is it keeps your npm and github release versions in line with each other. </p>
+				<pre><code class="language-sh"><span class="hljs-comment"># install package globally</span>
+npm i -g semantic-release-cli
+
+<span class="hljs-comment"># from your repo's root run</span>
+semantic-release-cli setup
+<span class="hljs-comment"># this will ask you some questions</span>
+? What is your npm registry? https://registry.npmjs.org/
+? What is your npm username? djhouseknecht
+? What is your npm password? [hidden]
+? What is your GitHub username? djhouseknecht
+? What is your GitHub password? [hidden]
+? What is your GitHub two-factor authentication code? [hidden]
+? What CI are you using? Travis CI
+? Do you want a `.travis.yml` file with semantic-release setup? Yes</code></pre>
+				<p>This takes care of authentication between npm, github, and travis, and should make a couple modifications to your <code>package.json</code> and create a <code>.travis.yml</code> file (we will come back to both of these files). For now, just make sure this was added to the <code>&quot;scripts&quot;</code> object. </p>
+				<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;semantic-release&quot;: &quot;semantic-release&quot;,
+    //... 
+},</code></pre>
+				<p><code>semantic-release</code> needs there to be standard commit messages so it needs helps. Which is our next step.</p>
+				<blockquote>
+					<p>Optional: You may want to publish a placeholder version (ie. <code>0.0.1</code>) to npm before you start using <code>semantic-release</code>. I did not do this once and my first placeholder version was <code>1.0.0</code> which isn&#39;t ideal. </p>
+				</blockquote>
+				<a href="#standardize-commit-messages" id="standardize-commit-messages" style="color: inherit; text-decoration: none;">
+					<h2>Standardize commit messages</h2>
+				</a>
+				<p><a href="https://www.npmjs.com/package/commitizen">commitizen</a> is a tool to standardize your commit messages. It is configurable so we are going to be using the package <a href="https://www.npmjs.com/package/cz-conventional-changelog">cz-conventional-changelog</a> to help. </p>
+				<pre><code class="language-sh"><span class="hljs-comment"># install packages</span>
+npm i --save-dev commitizen cz-conventional-changelog</code></pre>
+				<p>Add these lines to your <code>package.json</code></p>
+				<pre><code class="language-json">{
+  //...
+  scripts: { 
+    &quot;commit&quot;: &quot;git-cz&quot;, 
+    // ... 
+  },
+  //... 
+  &quot;config&quot;: {
+    &quot;commitizen&quot;: {
+      &quot;path&quot;: &quot;./node_modules/cz-conventional-changelog&quot;
+    }
+  }
+}</code></pre>
+				<blockquote>
+					<p>Remember to use <code>npm run commit</code> instead of <code>git commit -m &quot;&quot;</code> to leverage <code>commitizen</code></p>
+				</blockquote>
+				<p>Here is some helpful info on commit message from angular.js&#39; <a href="https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines">DEVELOPER.md</a></p>
+				<blockquote>
+					<p>PRO TIP: You’ll still get Pull Requests that don’t follow these rules – in those cases, select <em>“Squash and Merge”</em> instead of the default <em>“Create Merge Commit”</em>. You’ll be able to enter a new commit message that will trigger a new release.</p>
+				</blockquote>
+				<a href="#setting-up-typescript" id="setting-up-typescript" style="color: inherit; text-decoration: none;">
+					<h2>Setting up TypeScript</h2>
+				</a>
+				<p>I also use typescript where possible. So, here is a good setup. </p>
+				<blockquote>
+					<p>TypeScript v3.7.x is not backward compatible with v3.6.x and lower, so if you need backward compatibility (like for an Angular &lt;= 8 app) then install ts <code>~3.6.5</code> (<a href="https://github.com/microsoft/TypeScript/issues/33939">see here</a>). </p>
+				</blockquote>
+				<p>Installing v3.6.x is optional. There are some serious breaking changes between version 3.6.x and 3.7.x. If you are targeting Angular apps version 8 and below, you will want to use this version. </p>
+				<pre><code class="language-sh">npm i --save-dev typescript</code></pre>
+				<p><strong>NOTE:</strong></p>
+				<blockquote>
+					<p>A new stable version of Node was released last Wednesday, and with it came the newest version of npm. This update included a lot of big fixes, but the most visible change is that ‘install –save’ now prepends a caret (^) instead of a tilde (~).</p>
+					<p>&mdash; <cite><a href="http://fredkschott.com/post/2014/02/npm-no-longer-defaults-to-tildes/">From Fred K. Schott&#39;s Article</a></cite></p>
+				</blockquote>
+				<p>If you went with typescript v3.x, then you have to go into out <code>package.json</code> and manually edit the typescript dependency to the patch version &mdash; ie. <em>tilde</em> (<code>~</code>). Otherwise, you are good to go (later you will need to tell Dependabot not to try to bump ts).</p>
+				<pre><code class="language-json">&quot;devDependencies&quot;: {
+    &quot;typescript&quot;: &quot;~3.6.5&quot;,
+    // ...
+},</code></pre>
+				<p>Create <strong>./tsconfig.json</strong> with some good starting options:</p>
+				<pre><code class="language-json">{
+    <span class="hljs-attr">"include"</span>: [
+        <span class="hljs-string">"src/**/*"</span>
+    ],
+    <span class="hljs-attr">"exclude"</span>: [],
+    <span class="hljs-attr">"compilerOptions"</span>: {
+        <span class="hljs-comment">/* Basic Options */</span>
+        <span class="hljs-attr">"target"</span>: <span class="hljs-string">"es5"</span>,
+        <span class="hljs-attr">"module"</span>: <span class="hljs-string">"commonjs"</span>,
+        <span class="hljs-attr">"baseUrl"</span>: <span class="hljs-string">"./"</span>,
+        <span class="hljs-attr">"outDir"</span>: <span class="hljs-string">"./build"</span>,
+        <span class="hljs-attr">"sourceMap"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"strict"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"moduleResolution"</span>: <span class="hljs-string">"node"</span>,
+        <span class="hljs-attr">"esModuleInterop"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"lib"</span>: [
+            <span class="hljs-string">"es2015"</span>
+        ],
+        <span class="hljs-attr">"declaration"</span>: <span class="hljs-literal">true</span>,
+    }
+}</code></pre>
+				<p>In <code>package.json</code>, add this to <code>&quot;scripts&quot;</code>:</p>
+				<pre><code class="language-json">{
+    <span class="hljs-attr">"scripts"</span>: {
+        <span class="hljs-attr">"build"</span>: <span class="hljs-string">"tsc --project ."</span>,
+        <span class="hljs-comment">// ...</span>
+    }
+    <span class="hljs-comment">// ...</span>
+}</code></pre>
+				<p>Let&#39;s also add <code>build</code> to our <code>.gitignore</code> so we aren&#39;t pushing built files to github. Our travis build pipeline will take care of getting built source code to the npm registry. </p>
+				<p><strong>.gitignore</strong> should look like</p>
+				<pre><code class="language-txt">node_modules
+build</code></pre>
+				<p>You can use <a href="https://webpack.js.org/">webpack</a> or <a href="https://rollupjs.org/guide/en/">rollup.js</a> to build if you want. There are <em>tons</em> of resources out there for setup. I am just compiling the typescript for now. </p>
+				<p>We will test it out to make sure you get compiled js in the <code>./build</code> directory after we add some source code and tests in the next section. </p>
+				<a href="#testing-and-code-coverage" id="testing-and-code-coverage" style="color: inherit; text-decoration: none;">
+					<h2>Testing and Code Coverage</h2>
+				</a>
+				<p>I like <a href="https://jestjs.io/">jest</a> for testing my JS/TS libraries. It has some convient <a href="https://jestjs.io/docs/en/cli#--coverageboolean">code coverage tools</a>. I&#39;m not going to go into depth, but here is some basic jest setup. </p>
+				<pre><code class="language-sh">npm i --save-dev jest @types/jest ts-jest @babel/core @babel/preset-env babel-jest </code></pre>
+				<p>We need <a href="https://babeljs.io/">babel</a> to transpile our ES6 JavaScript (if we have any) and <a href="https://kulshekhar.github.io/ts-jest/">ts-jest</a> to compile out TypeScript files. </p>
+				<p><strong>src/index.ts</strong></p>
+				<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">helloWorld</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello World'</span>;
+}</code></pre>
+				<p><strong>test/index.spec.ts</strong></p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { helloWorld } <span class="hljs-keyword">from</span> <span class="hljs-string">'../src'</span>;
+
+describe(<span class="hljs-string">'Index'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    test(<span class="hljs-string">'should say Hello World'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        expect(helloWorld()).toBe(<span class="hljs-string">'Hello World'</span>);
+    });
+});</code></pre>
+				<p><strong>jest.config.js</strong></p>
+				<pre><code class="language-js"><span class="hljs-built_in">module</span>.exports = {
+    <span class="hljs-attr">testEnvironment</span>: <span class="hljs-string">'node'</span>,
+    <span class="hljs-comment">// tells jest where are files are located</span>
+    <span class="hljs-attr">roots</span>: [
+        <span class="hljs-string">'&lt;rootDir&gt;/src'</span>,
+        <span class="hljs-string">'&lt;rootDir&gt;/test'</span>
+    ],
+    <span class="hljs-comment">// tells jest what file path to match for tests</span>
+    <span class="hljs-attr">testMatch</span>: [
+        <span class="hljs-string">'&lt;rootDir&gt;/test/**/*.spec.(ts|js)'</span>
+    ],
+    <span class="hljs-attr">modulePaths</span>: [
+        <span class="hljs-string">'src'</span>,
+        <span class="hljs-string">'/node_modules/'</span>
+    ],
+    <span class="hljs-comment">// this will load js and ts files</span>
+    <span class="hljs-attr">transform</span>: {
+        <span class="hljs-string">'^.+\\.jsx?$'</span>: <span class="hljs-string">'babel-jest'</span>,
+    <span class="hljs-string">'^.+\\.tsx?$'</span>: <span class="hljs-string">'ts-jest'</span>
+    },
+    <span class="hljs-comment">// we want to collect coverage for later</span>
+    <span class="hljs-attr">collectCoverage</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">collectCoverageFrom</span>: [
+        <span class="hljs-string">'src/**/*.{js,jsx,ts,tsx}'</span>,
+        <span class="hljs-string">'!**/node_modules/**'</span>,
+        <span class="hljs-string">'!**/types/**'</span>
+    ],
+    <span class="hljs-attr">coverageReporters</span>: [
+        <span class="hljs-string">'lcov'</span>, <span class="hljs-string">'text'</span>
+    ],
+    <span class="hljs-attr">coverageThreshold</span>: {
+        <span class="hljs-attr">global</span>: {
+            <span class="hljs-attr">branches</span>: <span class="hljs-number">100</span>,
+            <span class="hljs-attr">functions</span>: <span class="hljs-number">100</span>,
+            <span class="hljs-attr">lines</span>: <span class="hljs-number">100</span>,
+            <span class="hljs-attr">statements</span>: <span class="hljs-number">100</span>
+        }
+    },
+    <span class="hljs-attr">coverageDirectory</span>: <span class="hljs-string">'./coverage'</span>
+};</code></pre>
+				<p><strong>babel.config.js</strong></p>
+				<pre><code class="language-js"><span class="hljs-built_in">module</span>.exports = {
+    <span class="hljs-comment">// tells babel to use this preset</span>
+    <span class="hljs-attr">presets</span>: [
+        <span class="hljs-string">'@babel/preset-env'</span>
+    ]
+};</code></pre>
+				<p>In <strong>package.json</strong> add this script:</p>
+				<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;test&quot;: &quot;jest&quot;
+    // other scripts
+}</code></pre>
+				<p>I like to add <code>coverage</code> to my <code>.gitignore</code>. Travis and Codecov will take care of showing our coverage results.</p>
+				<p><strong>.gitignore</strong> should look like this now:</p>
+				<pre><code class="language-txt">node_modules
+build
+coverage</code></pre>
+				<p>See if it works. </p>
+				<pre><code class="language-sh">npm <span class="hljs-built_in">test</span></code></pre>
+				<p>You should get this output:
+				<img src="assets/jest-results.png" alt="Jest Results" title="Jest Results"></p>
+				<p>Now that we have files, let&#39;s make sure our build works (from <a href="#setting-up-typescript">Setting up TypeScript</a>)</p>
+				<pre><code class="language-sh">npm run build</code></pre>
+				<p>Check to see if there is output in the <code>./build</code> directory. Should look like:
+				<img src="assets/build-output.png" alt="Build Output" title="Build Output"></p>
+				<a href="#codecov" id="codecov" style="color: inherit; text-decoration: none;">
+					<h4>Codecov</h4>
+				</a>
+				<p>Install <code>codecov</code></p>
+				<pre><code class="language-sh">npm i --save-dev codecov</code></pre>
+				<p>In <strong>package.json</strong> add this script:</p>
+				<pre><code class="language-json">&quot;scripts&quot;: {
+  &quot;codecov&quot;: &quot;codecov&quot;,
+    // other scripts
+}</code></pre>
+				<a href="#linting-and-editorconfig" id="linting-and-editorconfig" style="color: inherit; text-decoration: none;">
+					<h2>Linting and Editorconfig</h2>
+				</a>
+				<p>I like to use <a href="https://palantir.github.io/tslint/">tslint</a> for linting. Install needed devDependencies and create a <code>tslint.json</code> file</p>
+				<pre><code class="language-sh">npm i --save-dev tslint
+touch tslint.json</code></pre>
+				<p>Checkout <a href="/tslint.json">tslint.json</a> for some good rules. Copy and paste that into your <code>tslint.json</code> file. </p>
+				<p>In <strong>package.json</strong> add this script:</p>
+				<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;lint&quot;: &quot;tslint --project . --config tslint.json&quot;
+    // other scripts
+}</code></pre>
+				<p>Also, creating an <strong>.editorconfig</strong> helps standardize things. Checkout the <a href="/.editorconfig">.editorconfig</a> for some basic config. </p>
+				<a href="#git-hooks" id="git-hooks" style="color: inherit; text-decoration: none;">
+					<h2>Git Hooks</h2>
+				</a>
+				<p>I use <a href="https://github.com/typicode/husky">husky</a>, but there is <a href="https://www.npmjs.com/package/pre-commit">pre-commit</a> which is pretty good too. This will ensure that your code passes tests and linting before you push and/or commit. Otherwise travis may be the one to find </p>
+				<p>Install the dependency: </p>
+				<pre><code class="language-sh">npm i --save-dev husky</code></pre>
+				<p>In <strong>package.json</strong> add this config: </p>
+				<pre><code class="language-json">"husky": {
+    "hooks": {
+        "pre-commit": "npm run lint &amp;&amp; npm run test",
+        "pre-push": "npm run lint &amp;&amp; npm run test"
+    }
+},</code></pre>
+				<p><em>You don&#39;t need both <code>pre-commit</code> and <code>pre-push</code>. Both can get annoying if you have a slow test process.</em></p>
+				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+					<h2>Documentation</h2>
+				</a>
+				<blockquote>
+					<p>Note: I was not able to get <a href="https://typedoc.org/">typedoc</a> to work with typescript v3.6.x</p>
+				</blockquote>
+				<p>Let&#39;s use <a href="https://typedoc.org/">typedoc</a> to set up some nice documentation of our APIs. First, we will install it:</p>
+				<pre><code class="language-sh">npm install --save-dev typedoc</code></pre>
+				<p>We will create a <code>typedoc.config.js</code> file to specify a few config options. We are only going to set some basic configuration, but checkout <a href="https://typedoc.org/guides/options/#options">typedoc&#39;s configuration options</a> for lots more options. </p>
+				<pre><code class="language-js"><span class="hljs-comment">// typedoc.config.js</span>
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">inputFiles</span>: [
+    <span class="hljs-string">'./src'</span>
+  ],
+  <span class="hljs-attr">mode</span>: <span class="hljs-string">'modules'</span>,
+  <span class="hljs-attr">out</span>: <span class="hljs-string">'docs'</span>,
+  <span class="hljs-attr">excludePrivate</span>: <span class="hljs-literal">true</span>
+}</code></pre>
+				<p>We are going to build <code>html</code> files into a <code>docs/</code> directory. We will then deploy them to <a href="https://pages.github.com/">GitHub Pages</a>! You can also compile typedoc to Markdown using the <a href="https://www.npmjs.com/package/typedoc-plugin-markdown"><code>typedoc-plugin-markdown</code></a>. </p>
+				<p>Then we will add a <code>doc</code> script to our <code>package.json</code> to execute the generation of the files: </p>
+				<pre><code class="language-json">&quot;scripts&quot;: {
+    &quot;doc&quot;: &quot;typedoc --options typedoc.config.js&quot;
+    // other scripts
+}</code></pre>
+				<p>Now, run <code>npm run doc</code> and go check the <code>docs/</code> folder. There should be an output like this: </p>
+				<p><img src="assets/typedoc-output.png" alt="Typedoc Output" title="Typedoc Output"></p>
+				<p>We set the <code>mode: &#39;module</code> so there is not a <code>docs/modules</code> directory with all the modules. The <code>index.html</code> file has our <code>README.md</code> generated to html (and some other nice typedoc styling/navigation). </p>
+				<p>To deploy to Git Pages, we need to add more more file. Github using <a href="https://jekyllrb.com/">Jekyll</a> to compile our site files, and it will not publish files that start with an underscore <code>_</code> (<a href="https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll">see here</a>). </p>
+				<p>We need to add a blank <code>.nojekyll</code></p>
+				<a href="#dependency-management" id="dependency-management" style="color: inherit; text-decoration: none;">
+					<h2>Dependency Management</h2>
+				</a>
+				<p>I tried <a href="https://dependabot.com/">dependabot</a> for this. It is crazy easy to setup for javascript libraries so just check it out. </p>
+				<ul>
+					<li>signup</li>
+					<li>grant access to all or desired repos</li>
+					<li>enable desired repos (it may ask you to install github app - say yes)</li>
+					<li>sit back and watch it work</li>
+				</ul>
+				<p>If you are using typescript v3.6.x, you need to tell dependabot not to try to bump typescript to v3.7.x. Create this: </p>
+				<p><strong>.dependabot/config.yml</strong></p>
+				<pre><code class="language-yml"><span class="hljs-attr">version:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">update_configs:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">package_manager:</span> <span class="hljs-string">"javascript"</span>
+    <span class="hljs-attr">directory:</span> <span class="hljs-string">"/"</span>
+    <span class="hljs-attr">update_schedule:</span> <span class="hljs-string">"live"</span>
+    <span class="hljs-attr">ignored_updates:</span>
+    <span class="hljs-comment"># this will tell Dependabot not to try bumping these versions</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">match:</span>
+      <span class="hljs-comment"># ignore typescript minor version</span>
+      <span class="hljs-comment">#  this is for compatibility with Angular apps 4 &gt;= and &lt;= 9</span>
+      <span class="hljs-comment"># only add these if you went with ts v3.x </span>
+      <span class="hljs-comment">#  (you can also add more dependencies you don't want to bump)</span>
+      <span class="hljs-attr">dependency_name:</span> <span class="hljs-string">"typescript"</span>
+            <span class="hljs-attr">version_requirement:</span> <span class="hljs-string">"~3.6.5"</span></code></pre>
+				<blockquote>
+					<p>Note this file is only really needed if you need extra configuration over dependabot </p>
+				</blockquote>
+				<a href="#badges" id="badges" style="color: inherit; text-decoration: none;">
+					<h2>Badges</h2>
+				</a>
+				<p>Now let&#39;s add some fancy badges! </p>
+				<a href="#travis-build-status-badge" id="travis-build-status-badge" style="color: inherit; text-decoration: none;">
+					<h4>Travis Build Status Badge</h4>
+				</a>
+				<ul>
+					<li>Login to <a href="https://travis-ci.org/">travis-ci.org</a> </li>
+					<li>Select your repo</li>
+					<li>Click on the <code>build: passing</code> icon</li>
+					<li>Select &quot;Format&quot; -&gt; &quot;Markdown&quot;</li>
+					<li>Copy &quot;Result&quot; and paste it into your README</li>
+				</ul>
+				<p><img src="assets/travis-badge.png" alt="Travis Badge" title="Travis Badge"></p>
+				<a href="#codecov-1" id="codecov-1" style="color: inherit; text-decoration: none;">
+					<h4>Codecov</h4>
+				</a>
+				<p>Put this in your README and alter it with your username and repo name</p>
+				<pre><code>[<span class="hljs-string">![codecov</span>](<span class="hljs-link">https://codecov.io/gh/username/repo-name/branch/master/graph/badge.svg</span>)](<span class="hljs-link">https://codecov.io/gh/username/repo-name</span>)  </code></pre>
+				<a href="#npm-version" id="npm-version" style="color: inherit; text-decoration: none;">
+					<h4>NPM Version</h4>
+				</a>
+				<p>Put this in your README and alter it with your repo name</p>
+				<pre><code>[<span class="hljs-string">![npm version</span>](<span class="hljs-link">https://badge.fury.io/js/repo-name.svg</span>)](<span class="hljs-link">https://badge.fury.io/js/repo-name</span>) </code></pre>
+				<a href="#dependabot" id="dependabot" style="color: inherit; text-decoration: none;">
+					<h4>Dependabot</h4>
+				</a>
+				<p>Put this in your README and alter it with your username and repo name</p>
+				<pre><code>[<span class="hljs-string">![dependabot-status</span>](<span class="hljs-link">https://flat.badgen.net/dependabot/username/repo-name/?icon=dependabot</span>)][<span class="hljs-symbol">dependabot</span>]  </code></pre>
+				<a href="#semantic-release" id="semantic-release" style="color: inherit; text-decoration: none;">
+					<h4>Semantic-release</h4>
+				</a>
+				<p>Put this in your README</p>
+				<pre><code>[![semantic-<span class="hljs-keyword">release</span>](https://img.shields.io/badge/<span class="hljs-symbol">%20</span><span class="hljs-symbol">%20</span><span class="hljs-symbol">%F0</span><span class="hljs-symbol">%9</span>F<span class="hljs-symbol">%93</span><span class="hljs-symbol">%A6</span><span class="hljs-symbol">%F0</span><span class="hljs-symbol">%9</span>F<span class="hljs-symbol">%9</span>A<span class="hljs-symbol">%80</span>-semantic--<span class="hljs-keyword">release</span>-e<span class="hljs-number">10079</span>.svg)](https://github.com/semantic-<span class="hljs-keyword">release</span>/semantic-<span class="hljs-keyword">release</span>)  </code></pre>
+				<a href="#commitizen" id="commitizen" style="color: inherit; text-decoration: none;">
+					<h4>Commitizen</h4>
+				</a>
+				<p>Put this in your README</p>
+				<pre><code>[<span class="hljs-string">![Commitizen friendly</span>](<span class="hljs-link">https://img.shields.io/badge/commitizen-friendly-brightgreen.svg</span>)](<span class="hljs-link">http://commitizen.github.io/cz-cli/</span>) </code></pre>
+				<a href="#example-reposioty" id="example-reposioty" style="color: inherit; text-decoration: none;">
+					<h2>Example Reposioty</h2>
+				</a>
+				<p>My project <a href="https://github.com/djhouseknecht/rxjs-util-classes">rxjs-util-classes</a> uses this setup. Go check out the repo and its travis build to see some examples of this in action. </p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_index_.html">&quot;index&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

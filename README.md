@@ -42,7 +42,60 @@ npm init
 
 ![Travis Activate Repo][travis-activate-repo]
 
-### TODO: finish travis config (.yml)
+Now, create a **`.travis.yml`** file in your root directory with the following contents: 
+
+``` yml
+# tell travis what language you want to use
+language: node_js
+
+# these are the versions of node to run the tests on
+node_js:
+  - node
+  - 12
+  - 10
+
+# use `npm` cache to speed up the builds
+cache: npm
+
+# skip version branches (ie. v1.1.1)
+branches:
+  except:
+    - '/^v\d+\.\d+\.\d+$/'
+
+# install deps
+install:
+  - npm install
+
+# declare two jobs, "Test" & "Release"
+jobs:
+  include:
+    # Test, Lint, and Report Coverage
+    - stage: "Test"
+      script:
+        - npm run test
+        - npm run lint
+        - npm run codecov
+        - npm run build
+    # build and release only on non-forked, master branch
+    - stage: "Release"
+      if: branch == master && !fork
+      node_js: 12
+      script:
+        - npm run build
+        - npx semantic-release
+```
+
+Most of that is explained by the comments. A couple things to note: 
+
+* All node jobs will run a `"Test"` job. We have to override it with ours
+* The scripts run in order, so we need to list them in the order we want to run them
+* The `"Release"` stage will build the app (this can be any type of build script), and then call `semantic-release` to potentially release a new version (or on that in the next section)
+
+Example output for those jobs would look like this: 
+
+![Travis Build Results][travis-build-results]
+
+You will notice that there are three `"Test"` jobs because we told travis to test using node versions `node` (which equals the default), `12`, & `8`. There is only one `"Release"` job which ran because this was on the `master` branch. 
 
 ## Automating Releases
 [semantic-release] determines when and what to deploy. My favorite part is it keeps your npm and github release versions in line with each other. 
@@ -110,17 +163,19 @@ Here is some helpful info on commit message from angular.js' [DEVELOPER.md](http
 ## Setting up TypeScript
 I also use typescript where possible. So, here is a good setup. 
 
-> TypeScript v3.7.x is not backward compatible with v3.6.x and lower, so we want to install 3.6.x ([see here](https://github.com/microsoft/TypeScript/issues/33939)).
+> TypeScript v3.7.x is not backward compatible with v3.6.x and lower, so if you need backward compatibility (like for an Angular <= 8 app) then install ts `~3.6.5` ([see here](https://github.com/microsoft/TypeScript/issues/33939)). 
+
+Installing v3.6.x is optional. There are some serious breaking changes between version 3.6.x and 3.7.x. If you are targeting Angular apps version 8 and below, you will want to use this version. 
 
 ``` sh
-npm i --save-dev typescript@~3.6.5
+npm i --save-dev typescript
 ```
 **NOTE:**
 > A new stable version of Node was released last Wednesday, and with it came the newest version of npm. This update included a lot of big fixes, but the most visible change is that ‘install –save’ now prepends a caret (^) instead of a tilde (~).
 > 
 > &mdash; <cite>[From Fred K. Schott's Article]</cite>
 
-So, we have to go into out `package.json` and manually edit the typescript dependency to the patch version &mdash; ie. _tilde_ (`~`). 
+If you went with typescript v3.x, then you have to go into out `package.json` and manually edit the typescript dependency to the patch version &mdash; ie. _tilde_ (`~`). Otherwise, you are good to go (later you will need to tell Dependabot not to try to bump ts).
 
 ``` json 
 "devDependencies": {
@@ -362,7 +417,48 @@ _You don't need both `pre-commit` and `pre-push`. Both can get annoying if you h
 
 ## Documentation
 
-#### TODO: look into [typedoc]
+> Note: I was not able to get [typedoc] to work with typescript v3.6.x
+
+Let's use [typedoc] to set up some nice documentation of our APIs. First, we will install it:
+
+``` sh
+npm install --save-dev typedoc
+```
+
+We will create a `typedoc.config.js` file to specify a few config options. We are only going to set some basic configuration, but checkout [typedoc's configuration options](https://typedoc.org/guides/options/#options) for lots more options. 
+
+``` js
+// typedoc.config.js
+module.exports = {
+  inputFiles: [
+    './src'
+  ],
+  mode: 'modules',
+  out: 'docs',
+  excludePrivate: true
+}
+```
+
+We are going to build `html` files into a `docs/` directory. We will then deploy them to [GitHub Pages](https://pages.github.com/)! You can also compile typedoc to Markdown using the [`typedoc-plugin-markdown`](https://www.npmjs.com/package/typedoc-plugin-markdown). 
+
+Then we will add a `doc` script to our `package.json` to execute the generation of the files: 
+
+``` json
+"scripts": {
+	"doc": "typedoc --options typedoc.config.js"
+	// other scripts
+}
+```
+
+Now, run `npm run doc` and go check the `docs/` folder. There should be an output like this: 
+
+![Typedoc Output][typedoc-output]
+
+We set the `mode: 'module` so there is not a `docs/modules` directory with all the modules. The `index.html` file has our `README.md` generated to html (and some other nice typedoc styling/navigation). 
+
+To deploy to Git Pages, we need to add more more file. Github using [Jekyll] to compile our site files, and it will not publish files that start with an underscore `_` ([see here](https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll)). 
+
+We need to add a blank `.nojekyll`
 
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
@@ -371,7 +467,7 @@ I tried [dependabot] for this. It is crazy easy to setup for javascript librarie
 * enable desired repos (it may ask you to install github app - say yes)
 * sit back and watch it work
 
-Since we are using typescript, we are going to have to tell dependabot not to try to bump typescript to v3.7.x. Create this: 
+If you are using typescript v3.6.x, you need to tell dependabot not to try to bump typescript to v3.7.x. Create this: 
 
 **.dependabot/config.yml**
 ``` yml
@@ -381,11 +477,17 @@ update_configs:
     directory: "/"
     update_schedule: "live"
     ignored_updates:
+    # this will tell Dependabot not to try bumping these versions
 		- match:
-			# ignore typescript minor version
-			dependency_name: "typescript"
+      # ignore typescript minor version
+      #  this is for compatibility with Angular apps 4 >= and <= 9
+      # only add these if you went with ts v3.x 
+      #  (you can also add more dependencies you don't want to bump)
+      dependency_name: "typescript"
 			version_requirement: "~3.6.5"
 ```
+
+> Note this file is only really needed if you need extra configuration over dependabot 
 
 ## Badges
 
@@ -405,7 +507,6 @@ Put this in your README and alter it with your username and repo name
 
 ```
 [![codecov](https://codecov.io/gh/username/repo-name/branch/master/graph/badge.svg)](https://codecov.io/gh/username/repo-name)  
-
 ```
 
 #### NPM Version
@@ -413,15 +514,13 @@ Put this in your README and alter it with your repo name
 
 ```
 [![npm version](https://badge.fury.io/js/repo-name.svg)](https://badge.fury.io/js/repo-name) 
-
 ```
 
 #### Dependabot
 Put this in your README and alter it with your username and repo name
 
 ```
- [![dependabot-status](https://flat.badgen.net/dependabot/username/repo-name/?icon=dependabot)][dependabot]  
-
+[![dependabot-status](https://flat.badgen.net/dependabot/username/repo-name/?icon=dependabot)][dependabot]  
 ```
 
 #### Semantic-release
@@ -455,22 +554,25 @@ My project [rxjs-util-classes] uses this setup. Go check out the repo and its tr
 [tslint]: https://palantir.github.io/tslint/
 [husky]: https://github.com/typicode/husky
 [pre-commit]: https://www.npmjs.com/package/pre-commit
-[typedoc]: https://typedoc.org/guides/options/#options
+[typedoc]: https://typedoc.org/
+[Jekyll]: https://jekyllrb.com/
 
 
-[First Things First]: first-things-first
-[Travis CI]: travis-ci
-[Automating Releases]: automating-releases
-[Standardize commit messages]: standardize-commit-messages
-[Setting up TypeScript]: setting-up-typescript
-[Testing and Code Coverage]: testing-and-code-coverage
-[Linting and Editorconfig]: linting-and-editorconfig
-[Git Hooks]: git-hooks
-[Documentation]: documentation
-[Dependency Management]: dependency-management
-[Badges]: badges
+[First Things First]: #first-things-first
+[Travis CI]: #travis-ci
+[Automating Releases]: #automating-releases
+[Standardize commit messages]: #standardize-commit-messages
+[Setting up TypeScript]: #setting-up-typescript
+[Testing and Code Coverage]: #testing-and-code-coverage
+[Linting and Editorconfig]: #linting-and-editorconfig
+[Git Hooks]: #git-hooks
+[Documentation]: #documentation
+[Dependency Management]: #dependency-management
+[Badges]: #badges
 
 [travis-activate-repo]: assets/travis-activate-repo.png "Travis Active Repo"
+[travis-build-results]: assets/travis-build-results.png "Travis Build Results"
 [jest-results]: assets/jest-results.png "Jest Results"
 [build-output]: assets/build-output.png "Build Output"
 [travis-badge]: assets/travis-badge.png "Travis Badge"
+[typedoc-output]: assets/typedoc-output.png "Typedoc Output"
