@@ -414,15 +414,24 @@ touch tslint.json</code></pre>
 }</code></pre>
 				<p>We are going to build <code>html</code> files into a <code>docs/</code> directory. We will then deploy them to <a href="https://pages.github.com/">GitHub Pages</a>! You can also compile typedoc to Markdown using the <a href="https://www.npmjs.com/package/typedoc-plugin-markdown"><code>typedoc-plugin-markdown</code></a>. </p>
 				<p>Then we will add a <code>doc</code> script to our <code>package.json</code> to execute the generation of the files: </p>
-				<pre><code class="language-json">&quot;scripts&quot;: {
-    &quot;doc&quot;: &quot;typedoc --options typedoc.config.js&quot;
+				<pre><code class="language-json">"scripts": {
+  "doc": "typedoc --options typedoc.config.js &amp;&amp; touch ./docs/.nojekyll"
     // other scripts
 }</code></pre>
 				<p>Now, run <code>npm run doc</code> and go check the <code>docs/</code> folder. There should be an output like this: </p>
 				<p><img src="assets/typedoc-output.png" alt="Typedoc Output" title="Typedoc Output"></p>
-				<p>We set the <code>mode: &#39;module</code> so there is not a <code>docs/modules</code> directory with all the modules. The <code>index.html</code> file has our <code>README.md</code> generated to html (and some other nice typedoc styling/navigation). </p>
-				<p>To deploy to Git Pages, we need to add more more file. Github using <a href="https://jekyllrb.com/">Jekyll</a> to compile our site files, and it will not publish files that start with an underscore <code>_</code> (<a href="https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll">see here</a>). </p>
-				<p>We need to add a blank <code>.nojekyll</code></p>
+				<p>We set the <code>mode: &#39;module&#39;</code> so there is not a <code>docs/modules</code> directory with all the modules. The <code>index.html</code> file has our <code>README.md</code> generated to html (and some other nice typedoc styling/navigation). </p>
+				<p>To deploy to Git Pages, we needed to add the <code>docs/.nojekyll</code> file. Github using <a href="https://jekyllrb.com/">Jekyll</a> to compile our site files, and it will not publish files that start with an underscore <code>_</code> (<a href="https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll">see here</a>). </p>
+				<p>Once you have that pushed up to your repo, you can go to: <strong>your github repo &gt; Settings <em>(the tab to the far right)</em> &gt; <em>scroll down to</em> GitHub Pages</strong> and set the <strong>Source</strong> to <strong>master branch /docs folder</strong>:</p>
+				<p><img src="assets/git-pages-config.png" alt="Git Pages Config" title="Git Pages Config"></p>
+				<p>Then navigate to the URL it gives you, in our case: <a href="https://djhouseknecht.github.io/setting-up-an-opensource-npm-project/index.html">https://djhouseknecht.github.io/setting-up-an-opensource-npm-project/index.html</a></p>
+				<blockquote>
+					<p>You may need to wait a few minutes for the docs to actually be published</p>
+				</blockquote>
+				<p>The final product, is the <code>README</code> with links to our source code documentation: </p>
+				<p><img src="assets/git-pages.png" alt="Git Pages" title="Git Pages"></p>
+				<p>Click on the <code>&quot;index&quot;</code> link:</p>
+				<p><img src="assets/git-pages-2.png" alt="Git Pages x2" title="Git Pages x2"></p>
 				<a href="#dependency-management" id="dependency-management" style="color: inherit; text-decoration: none;">
 					<h2>Dependency Management</h2>
 				</a>

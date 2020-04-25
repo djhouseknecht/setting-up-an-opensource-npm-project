@@ -458,8 +458,21 @@ We set the `mode: 'module'` so there is not a `docs/modules` directory with all 
 
 To deploy to Git Pages, we needed to add the `docs/.nojekyll` file. Github using [Jekyll] to compile our site files, and it will not publish files that start with an underscore `_` ([see here](https://help.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll)). 
 
-Once you have that pushed up to your repo, you can go to: **your github repo > Settings** (the tab to the far right): 
+Once you have that pushed up to your repo, you can go to: **your github repo > Settings _(the tab to the far right)_ > _scroll down to_ GitHub Pages** and set the **Source** to **master branch /docs folder**:
 
+![Git Pages Config][git-pages-config]
+
+Then navigate to the URL it gives you, in our case: https://djhouseknecht.github.io/setting-up-an-opensource-npm-project/index.html
+
+> You may need to wait a few minutes for the docs to actually be published
+
+The final product, is the `README` with links to our source code documentation: 
+
+![Git Pages][git-pages]
+
+Click on the `"index"` link:
+
+![Git Pages x2][git-pages-2]
 
 ## Dependency Management
 I tried [dependabot] for this. It is crazy easy to setup for javascript libraries so just check it out. 
@@ -577,3 +590,6 @@ My project [rxjs-util-classes] uses this setup. Go check out the repo and its tr
 [build-output]: assets/build-output.png "Build Output"
 [travis-badge]: assets/travis-badge.png "Travis Badge"
 [typedoc-output]: assets/typedoc-output.png "Typedoc Output"
+[git-pages-config]: assets/git-pages-config.png "Git Pages Config"
+[git-pages]: assets/git-pages.png "Git Pages"
+[git-pages-2]: assets/git-pages-2.png "Git Pages x2"
